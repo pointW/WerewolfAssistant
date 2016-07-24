@@ -18,6 +18,9 @@ public class CharacterSettingActivity extends AppCompatActivity {
     private Switch seerSwitch;
     private Switch witchSwitch;
     private Switch idiotSwitch;
+    private Switch elderSwitch;
+    private Switch cupidSwitch;
+    private Switch guardSwitch;
 
     private CharacterSetting characterSetting;
 
@@ -34,6 +37,10 @@ public class CharacterSettingActivity extends AppCompatActivity {
         seerSwitch = (Switch) findViewById(R.id.seerSwitch);
         witchSwitch = (Switch) findViewById(R.id.witchSwitch);
         idiotSwitch = (Switch) findViewById(R.id.idiotSwitch);
+        elderSwitch = (Switch) findViewById(R.id.elderSwitch);
+        cupidSwitch = (Switch) findViewById(R.id.cupidSwitch);
+        guardSwitch = (Switch) findViewById(R.id.guardSwitch);
+
 
         findViewById(R.id.startGameButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,28 +63,49 @@ public class CharacterSettingActivity extends AppCompatActivity {
         hunterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                characterSetting.setHaveHunter(b);
+                characterSetting.addGod(Globals.God.Hunter,b);
                 adjustCivilianNumber();
             }
         });
         seerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                characterSetting.setHaveSeer(b);
+                characterSetting.addGod(Globals.God.Seer, b);
                 adjustCivilianNumber();
             }
         });
         witchSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                characterSetting.setHaveWitch(b);
+                characterSetting.addGod(Globals.God.Witch, b);
                 adjustCivilianNumber();
             }
         });
         idiotSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                characterSetting.setHaveIdiot(b);
+                characterSetting.addGod(Globals.God.Idiot, b);
+                adjustCivilianNumber();
+            }
+        });
+        elderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                characterSetting.addGod(Globals.God.Elder, b);
+                adjustCivilianNumber();
+            }
+        });
+        cupidSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                characterSetting.addGod(Globals.God.Cupid, b);
+                adjustCivilianNumber();
+            }
+        });
+        guardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                characterSetting.addGod(Globals.God.Guard, b);
                 adjustCivilianNumber();
             }
         });

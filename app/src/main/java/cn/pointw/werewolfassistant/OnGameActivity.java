@@ -1,16 +1,22 @@
 package cn.pointw.werewolfassistant;
 
 import android.app.Dialog;
+import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.IntegerRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OnGameActivity extends AppCompatActivity {
 
@@ -20,6 +26,7 @@ public class OnGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_on_game);
         Intent intent = getIntent();
         CharacterSetting characterSetting = (CharacterSetting) intent.getSerializableExtra("characterSetting");
+        final String[] characterString = createCharacterString(characterSetting);
         GridLayout layout = (GridLayout) findViewById(R.id.playerLayout);
 
         int row = 0;
@@ -34,39 +41,47 @@ public class OnGameActivity extends AppCompatActivity {
                     Dialog dialog = new AlertDialog
                             .Builder(OnGameActivity.this)
                             .setTitle("请选择该玩家的身份")
-                            .setSingleChoiceItems(new String[]{"狼人", "平民", "女巫", "预言家", "猎人", "白痴"}, 0,
+                            .setSingleChoiceItems(characterString, 0,
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int j) {
                                             TextView tv = (TextView) OnGameActivity.this.findViewById(button.getId()+100);
-                                            switch (j){
+                                            setTextView(tv, characterString, j);
+                                        }
+                                    }).show();
+                }
+            });
+            button.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Dialog dialog = new AlertDialog
+                            .Builder(OnGameActivity.this)
+                            .setTitle("请选择操作")
+                            .setSingleChoiceItems(new String[]{"设置情侣", "设置死亡", "设置存活"}, 0,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            switch (i){
                                                 case 0:
-                                                    tv.setText("狼人");
-                                                    tv.setTextColor(Color.RED);
+                                                    if (button.getText().toString().contains("情")){
+                                                        button.setText(Integer.toString(button.getId()+1));
+                                                        button.setTextColor(Color.BLACK);
+                                                    }
+                                                    else {
+                                                        button.setText(Integer.toString(button.getId()+1)+"情");
+                                                        button.setTextColor(getResources().getColor(R.color.royalblue));
+                                                    }
                                                     break;
                                                 case 1:
-                                                    tv.setText("平民");
-                                                    tv.setTextColor(Color.YELLOW);
+                                                    button.setTextColor(Color.LTGRAY);
                                                     break;
                                                 case 2:
-                                                    tv.setText("女巫");
-                                                    tv.setTextColor(getResources().getColor(R.color.tomato));
-                                                    break;
-                                                case 3:
-                                                    tv.setText("预言家");
-                                                    tv.setTextColor(getResources().getColor(R.color.orchid));
-                                                    break;
-                                                case 4:
-                                                    tv.setText("猎人");
-                                                    tv.setTextColor(Color.GREEN);
-                                                    break;
-                                                case 5:
-                                                    tv.setText("白痴");
-                                                    tv.setTextColor(getResources().getColor(R.color.lightpink));
+                                                    button.setTextColor(Color.BLACK);
                                                     break;
                                             }
                                         }
-                                    }).setNegativeButton("取消", null).show();
+                                    }).show();
+                    return true;
                 }
             });
             GridLayout.LayoutParams bParam = new GridLayout.LayoutParams();
@@ -87,6 +102,81 @@ public class OnGameActivity extends AppCompatActivity {
                 col = 0;
                 row += 2;
             }
+        }
+        Button newGameButton = (Button) findViewById(R.id.newGameButton);
+        newGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dialog dialog = new AlertDialog
+                        .Builder(OnGameActivity.this)
+                        .setTitle("提示")
+                        .setMessage("确认开始新游戏?")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                OnGameActivity.this.finish();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).show();
+            }
+        });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //写下你希望按下返回键达到的效果代码，不写则不会有反应
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private String[] createCharacterString(CharacterSetting characterSetting){
+        String[] characterString = new String[characterSetting.getGodCharacter().size()+2];
+        characterString[0] = "狼人";
+        characterString[1] = "平民";
+        for(int i = 2; i < characterString.length; i++){
+            characterString[i] = Globals.getGodString(characterSetting.getGodCharacter().get(i-2));
+        }
+        return characterString;
+    }
+
+    private void setTextView(TextView textView, String[] characterString, int i){
+        textView.setText(characterString[i]);
+        switch (characterString[i]){
+            case "平民":
+                textView.setTextColor(Color.BLACK);
+                break;
+            case "狼人":
+                textView.setTextColor(Color.RED);
+                break;
+            case "女巫":
+                textView.setTextColor(getResources().getColor(R.color.tomato));
+                break;
+            case "预言家":
+                textView.setTextColor(getResources().getColor(R.color.orchid));
+                break;
+            case "猎人":
+                textView.setTextColor(Color.GREEN);
+                break;
+            case "白痴":
+                textView.setTextColor(getResources().getColor(R.color.lightpink));
+                break;
+            case "长老":
+                textView.setTextColor(getResources().getColor(R.color.darkolivegreen));
+                break;
+            case "丘比特":
+                textView.setTextColor(getResources().getColor(R.color.royalblue));
+                break;
+            case "守卫":
+                textView.setTextColor(getResources().getColor(R.color.lightskyblue));
+                break;
         }
     }
 }

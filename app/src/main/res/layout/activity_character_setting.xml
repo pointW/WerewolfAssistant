@@ -47,7 +47,7 @@
             android:text="猎人"
             android:id="@+id/hunterSwitch"
             android:layout_gravity="center_horizontal"
-            android:checked="true" />
+            android:checked="false" />
 
         <Switch
             android:layout_width="fill_parent"
@@ -55,7 +55,7 @@
             android:text="预言家"
             android:id="@+id/seerSwitch"
             android:layout_gravity="center_horizontal"
-            android:checked="true" />
+            android:checked="false" />
 
         <Switch
             android:layout_width="fill_parent"
@@ -70,6 +70,30 @@
             android:layout_height="wrap_content"
             android:text="白痴"
             android:id="@+id/idiotSwitch"
+            android:layout_gravity="center_horizontal"
+            android:checked="false" />
+
+        <Switch
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="长老"
+            android:id="@+id/elderSwitch"
+            android:layout_gravity="center_horizontal"
+            android:checked="false" />
+
+        <Switch
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="丘比特"
+            android:id="@+id/cupidSwitch"
+            android:layout_gravity="center_horizontal"
+            android:checked="false" />
+
+        <Switch
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="守卫"
+            android:id="@+id/guardSwitch"
             android:layout_gravity="center_horizontal"
             android:checked="false" />
 
